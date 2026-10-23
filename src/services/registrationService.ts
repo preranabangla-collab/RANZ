@@ -13,10 +13,31 @@ export interface SubmissionResponse {
 /**
  * Checks if Supabase client configuration is provided in environment variables
  */
+export const getCleanSupabaseConfig = () => {
+  const rawUrl = (import.meta.env.VITE_SUPABASE_URL || '').trim();
+  const rawKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+
+  // Extract clean https://*.supabase.co even if accidentally pasted multiple times or with whitespace
+  const urlMatch = rawUrl.match(/https:\/\/[a-z0-9-]+\.supabase\.co/i);
+  const cleanUrl = urlMatch ? urlMatch[0] : rawUrl;
+
+  // Extract clean JWT anon key (starts with eyJ...)
+  const keyMatch = rawKey.match(/eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/);
+  const cleanKey = keyMatch ? keyMatch[0] : rawKey;
+
+  const isConfigured = Boolean(
+    cleanUrl && 
+    cleanKey && 
+    cleanUrl.startsWith('https://') &&
+    !cleanUrl.includes('YOUR_') && 
+    !cleanKey.includes('YOUR_')
+  );
+
+  return { cleanUrl, cleanKey, isConfigured };
+};
+
 export const isSupabaseConfigured = (): boolean => {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-  return Boolean(url && anonKey && !url.includes('YOUR_') && !anonKey.includes('YOUR_'));
+  return getCleanSupabaseConfig().isConfigured;
 };
 
 /**
@@ -28,17 +49,24 @@ export const isSupabaseConfigured = (): boolean => {
 export const submitRegistration = async (
   formData: RegistrationFormData
 ): Promise<SubmissionResponse> => {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  const { cleanUrl: supabaseUrl, cleanKey: anonKey, isConfigured } = getCleanSupabaseConfig();
+
+  // Combine selected courses into readable text
+  const selectedCoursesList = formData.courses && formData.courses.length > 0 
+    ? formData.courses 
+    : (formData.course ? [formData.course] : []);
+  const coursesText = selectedCoursesList.join(', ');
 
   const newRecord: RegistrationRecord = {
     ...formData,
+    courses: selectedCoursesList,
+    course: coursesText,
     id: `reg_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
     createdAt: new Date().toISOString(),
-    source: isSupabaseConfigured() ? 'supabase' : 'local'
+    source: isConfigured ? 'supabase' : 'local'
   };
 
-  if (isSupabaseConfigured()) {
+  if (isConfigured) {
     try {
       const response = await fetch(`${supabaseUrl}/rest/v1/ranz_registrations`, {
         method: 'POST',
@@ -46,13 +74,13 @@ export const submitRegistration = async (
           'Content-Type': 'application/json',
           'apikey': anonKey,
           'Authorization': `Bearer ${anonKey}`,
-          'Prefer': 'return=minimal'
+          'Prefer': 'return=representation'
         },
         body: JSON.stringify({
-          full_name: formData.fullName,
-          phone: formData.phone,
+          full_name: formData.fullName.trim(),
+          phone: formData.phone.trim(),
           profession: formData.profession,
-          course_name: formData.course
+          course_name: coursesText
         })
       });
 

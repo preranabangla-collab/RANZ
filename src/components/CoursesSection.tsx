@@ -49,6 +49,11 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
                 <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[#17469E] text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs border border-blue-100 uppercase tracking-wide">
                   {course.badge}
                 </div>
+                {course.totalClasses && (
+                  <div className="absolute top-2.5 right-2.5 bg-slate-900/90 backdrop-blur-xs text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs">
+                    {course.totalClasses}টি ক্লাস
+                  </div>
+                )}
               </div>
 
               {/* Course Card Body */}
@@ -58,6 +63,11 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
                     <span className="text-[11px] font-mono font-medium text-slate-400">
                       Skill Course
                     </span>
+                    {course.totalClasses && (
+                      <span className="text-[11px] font-semibold text-[#17469E]">
+                        মোট {course.totalClasses}টি ক্লাস
+                      </span>
+                    )}
                   </div>
 
                   {/* Course Name in English */}

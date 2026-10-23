@@ -202,17 +202,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                         {activeCourse.nameEn}
                       </div>
                       <div className="text-[10px] text-slate-500 truncate">
-                        Mentor: {activeCourse.instructor?.name}
+                        Mentor: {activeCourse.instructor?.name} {activeCourse.totalClasses ? `· ${activeCourse.totalClasses}টি ক্লাস` : ''}
                       </div>
                     </div>
                   </div>
 
                   <button
                     onClick={() => onSelectCourseForDetails(activeCourse)}
-                    className="text-[11px] font-semibold text-[#17469E] bg-[#EAF2FF] hover:bg-blue-100 px-2 py-1 rounded transition-colors whitespace-nowrap shrink-0 flex items-center gap-1 cursor-pointer"
+                    className="text-[11px] font-semibold text-[#17469E] bg-[#EAF2FF] hover:bg-blue-100 px-2.5 py-1 rounded transition-colors whitespace-nowrap shrink-0 flex items-center gap-1 cursor-pointer"
                   >
                     <Info className="w-3 h-3" />
-                    <span>বিস্তারিত</span>
+                    <span>ক্লাস টপিক দেখুন</span>
                   </button>
                 </div>
               </div>
@@ -223,14 +223,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="cursor-pointer hidden sm:flex absolute -bottom-4 -left-4 bg-white border border-slate-200 rounded-xl p-2.5 shadow-lg shadow-slate-200/80 max-w-[240px] items-center gap-2.5 hover:border-blue-300 transition-all transform hover:-translate-y-0.5"
               >
                 <div className="w-8 h-8 rounded-lg bg-[#17469E] text-white flex items-center justify-center font-bold text-xs shrink-0 font-brand">
-                  {activeCourse.nameEn.substring(0, 2).toUpperCase()}
+                  {activeCourse.totalClasses ? `${activeCourse.totalClasses}` : activeCourse.nameEn.substring(0, 2).toUpperCase()}
                 </div>
                 <div className="text-left truncate">
                   <div className="text-[11px] font-bold text-slate-900 leading-tight font-brand truncate">
-                    {activeCourse.nameEn}
+                    {activeCourse.nameBn}
                   </div>
-                  <div className="text-[10px] text-emerald-600 font-medium mt-0.5">
-                    ● অটোমেটিক রোটেটিং
+                  <div className="text-[10px] text-[#17469E] font-medium mt-0.5">
+                    {activeCourse.totalClasses}টি ক্লাস · বিস্তারিত জানুন
                   </div>
                 </div>
               </div>

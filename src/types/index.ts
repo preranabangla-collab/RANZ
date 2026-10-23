@@ -8,6 +8,8 @@ export interface Course {
   imagePosition?: string;
   badge?: string;
   highlights?: string[];
+  totalClasses?: number;
+  topics?: string[];
   instructor?: {
     name: string;
     title: string;
@@ -33,7 +35,8 @@ export interface RegistrationFormData {
   fullName: string;
   phone: string;
   profession: ProfessionOption | '';
-  course: string;
+  courses: string[];
+  course?: string; // backwards compatibility (comma-joined string)
 }
 
 export interface RegistrationRecord extends RegistrationFormData {

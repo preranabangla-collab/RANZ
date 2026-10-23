@@ -8,7 +8,6 @@ import { AboutSection } from './components/AboutSection';
 import { ContactSection } from './components/ContactSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
-import { DeploymentGuideModal } from './components/DeploymentGuideModal';
 import { BackToTop } from './components/BackToTop';
 import { COURSES } from './data/coursesData';
 import { Course } from './types';
@@ -16,7 +15,6 @@ import { Course } from './types';
 export default function App() {
   const [selectedCourseForModal, setSelectedCourseForModal] = useState<Course | null>(null);
   const [selectedCourseForRegistration, setSelectedCourseForRegistration] = useState<string>('');
-  const [isDeploymentGuideOpen, setIsDeploymentGuideOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -72,7 +70,6 @@ export default function App() {
         {/* 4. Registration Section */}
         <RegistrationSection
           selectedCourseId={selectedCourseForRegistration}
-          onOpenDeploymentGuide={() => setIsDeploymentGuideOpen(true)}
         />
 
         {/* 5. About Section (RANZ Philosophy & Founders) */}
@@ -88,7 +85,6 @@ export default function App() {
       {/* 8. Footer (Dark Navy, Copyright, Navigation) */}
       <Footer
         onRegisterClick={handleRegisterClick}
-        onOpenDeploymentGuide={() => setIsDeploymentGuideOpen(true)}
       />
 
       {/* Course Details Modal */}
@@ -96,12 +92,6 @@ export default function App() {
         course={selectedCourseForModal}
         onClose={() => setSelectedCourseForModal(null)}
         onProceedToRegister={handleProceedToRegisterFromModal}
-      />
-
-      {/* Deployment & Supabase Free-Tier Setup Guide Modal */}
-      <DeploymentGuideModal
-        isOpen={isDeploymentGuideOpen}
-        onClose={() => setIsDeploymentGuideOpen(false)}
       />
 
       {/* Floating Back to Top Button */}

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Course } from '../types';
-import { X, ArrowRight, Clock, AlertCircle } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
 
 interface CourseModalProps {
   course: Course | null;
@@ -68,44 +68,65 @@ export const CourseModal: React.FC<CourseModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 space-y-3.5">
+        <div className="p-5 space-y-4 max-h-[70vh] overflow-y-auto">
           
           {/* Mentor Tag if available */}
           {course.instructor && (
-            <div className="flex items-center gap-2 p-2 bg-slate-50 rounded-lg border border-slate-100 text-left">
-              <img
-                src={course.instructor.image}
-                alt={course.instructor.name}
-                className="w-8 h-8 rounded-full object-cover border border-blue-200 shrink-0"
-                style={{ objectPosition: course.instructor.avatarPosition || 'center 35%' }}
-              />
-              <div>
-                <div className="text-xs font-bold text-slate-900 font-brand">
-                  Mentor: {course.instructor.name}
+            <div className="flex items-center justify-between gap-3 p-2.5 bg-slate-50 rounded-lg border border-slate-100 text-left">
+              <div className="flex items-center gap-2.5">
+                <img
+                  src={course.instructor.image}
+                  alt={course.instructor.name}
+                  className="w-9 h-9 rounded-full object-cover border border-blue-200 shrink-0"
+                  style={{ objectPosition: course.instructor.avatarPosition || 'center 35%' }}
+                />
+                <div>
+                  <div className="text-xs font-bold text-slate-900 font-brand">
+                    Mentor: {course.instructor.name}
+                  </div>
+                  <div className="text-[11px] text-slate-500">
+                    {course.instructor.title} · {course.instructor.phone}
+                  </div>
                 </div>
-                <div className="text-[10px] text-slate-500">
-                  {course.instructor.title} · Phone: {course.instructor.phone}
+              </div>
+              {course.totalClasses && (
+                <div className="px-2.5 py-1 rounded bg-[#17469E] text-white text-xs font-semibold shrink-0">
+                  {course.totalClasses}টি ক্লাস
                 </div>
+              )}
+            </div>
+          )}
+
+          {/* Course Overview */}
+          <div className="text-left text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+            {course.fullDesc || course.shortDesc}
+          </div>
+
+          {/* Class Topics List */}
+          {course.topics && course.topics.length > 0 && (
+            <div className="text-left space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-900 border-b border-slate-100 pb-1.5">
+                <span>ক্লাস কারিকুলাম ও টপিকসমূহ:</span>
+                <span className="text-[#17469E] font-semibold">{course.topics.length}টি ক্লাস</span>
+              </div>
+              <div className="space-y-1.5 max-h-56 overflow-y-auto pr-1">
+                {course.topics.map((topic, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-start gap-2 p-2 rounded-md bg-slate-50/80 hover:bg-blue-50/50 border border-slate-100 transition-colors text-xs"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-blue-100 text-[#17469E] font-bold text-[10px] flex items-center justify-center shrink-0 mt-0.5">
+                      {index + 1}
+                    </span>
+                    <span className="text-slate-800 font-medium leading-snug">
+                      {topic}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          <div className="p-3 rounded-lg bg-blue-50/70 border border-blue-100/90 text-left space-y-1">
-            <div className="flex items-center gap-1.5 text-xs font-semibold text-[#17469E]">
-              <Clock className="w-3.5 h-3.5 shrink-0 text-[#17469E]" />
-              <span>শীঘ্রই প্রকাশ করা হবে</span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-              এই কোর্সের বিস্তারিত তথ্য শিগগিরই প্রকাশ করা হবে। আগ্রহী হলে নিচের ফর্ম পূরণ করে রেজিস্ট্রেশন করুন।
-            </p>
-          </div>
-
-          <div className="text-[11px] text-slate-500 leading-relaxed text-left flex items-start gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-            <span>
-              রেজিস্ট্রেশন সম্পন্নকারীদের জন্য থাকবে কোর্সের আনুষ্ঠানিক আপডেট এবং বিশেষ অগ্রাধিকার।
-            </span>
-          </div>
 
           {/* Action Buttons */}
           <div className="pt-2 flex items-center justify-end gap-2.5 border-t border-slate-100">

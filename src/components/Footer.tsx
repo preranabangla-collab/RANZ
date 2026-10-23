@@ -1,14 +1,12 @@
 import React from 'react';
-import { Phone, Mail, ArrowUp, Database, MessageSquare, Send } from 'lucide-react';
+import { Phone, Mail, ArrowUp, MessageSquare, Send } from 'lucide-react';
 
 interface FooterProps {
   onRegisterClick: () => void;
-  onOpenDeploymentGuide: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onRegisterClick,
-  onOpenDeploymentGuide
 }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -179,16 +177,6 @@ export const Footer: React.FC<FooterProps> = ({
                   hmabdurrahman9082@gmail.com
                 </a>
               </div>
-            </div>
-
-            <div className="pt-1">
-              <button
-                onClick={onOpenDeploymentGuide}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] text-blue-300 font-medium transition-colors cursor-pointer border border-slate-700"
-              >
-                <Database className="w-3 h-3" />
-                <span>Supabase ও Vercel গাইড</span>
-              </button>
             </div>
           </div>
 

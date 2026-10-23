@@ -19,8 +19,8 @@ export const AboutSection: React.FC = () => {
       role: 'Co-Founder, RANZ',
       expertise: 'YouTube Automation',
       phone: '01862877500',
-      image: '/assets/aistudio/image_18ef3919.png',
-      avatarPosition: 'center 43%',
+      image: '/assets/aistudio/image_1a9f5736.png',
+      avatarPosition: 'center 28%',
       callUrl: 'tel:01862877500',
       whatsappUrl: 'https://wa.me/8801862877500?text=Hello%20Nazmul,%20I%20am%20interested%20in%20RANZ%20courses',
       telegramUrl: 'https://t.me/+8801862877500'
