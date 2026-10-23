@@ -9,6 +9,7 @@ import { ContactSection } from './components/ContactSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/BackToTop';
+import { SEOHead } from './components/SEOHead';
 import { COURSES } from './data/coursesData';
 import { Course } from './types';
 
@@ -47,6 +48,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-[#17469E] selection:text-white">
+      {/* SEO Canonical & JSON-LD Structured Data */}
+      <SEOHead />
+
       {/* 1. Header with Top Bar Contract */}
       <Header onRegisterClick={handleRegisterClick} />
 
