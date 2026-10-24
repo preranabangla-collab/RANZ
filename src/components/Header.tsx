@@ -47,6 +47,25 @@ export const Header: React.FC<HeaderProps> = ({ onRegisterClick }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between gap-8">
+          {/* Zone 1: Brand Wordmark with Official Logo */}
+<a
+  href="#home"
+  className="flex items-center gap-3 text-decoration-none group whitespace-nowrap shrink-0"
+>
+  <img
+    src="/assets/aistudio/image_833c97c0.png"
+    alt="RANZ Digital Skills"
+    className="h-10 w-10 sm:h-11 sm:w-11 object-contain rounded-xl border border-slate-200 shadow-2xs group-hover:scale-105 transition-transform bg-white"
+  />
+  <div className="flex flex-col">
+    <span className="font-brand font-extrabold text-lg sm:text-xl tracking-tight text-[#101828] leading-none">
+      RANZ
+    </span>
+    <span className="text-[9px] text-[#17469E] font-bold tracking-wider uppercase mt-0.5">
+      Digital Skills
+    </span>
+  </div>
+</a>
           
           {/* Zone 1: Brand Wordmark */}
           <a
