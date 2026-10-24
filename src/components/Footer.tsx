@@ -28,21 +28,22 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
           
           {/* Brand Col */}
-        <div className="flex items-center gap-3">
-  <img
-    src="/assets/aistudio/image_833c97c0.png"
-    alt="RANZ Digital Skills"
-    className="h-12 w-12 rounded-xl object-contain bg-white p-1 border border-slate-700 shadow-sm"
-  />
-  <div className="flex flex-col">
-    <span className="font-brand font-extrabold text-xl sm:text-2xl tracking-tight text-white leading-none">
-      RANZ
-    </span>
-    <span className="text-[10px] text-blue-400 font-semibold tracking-wider uppercase mt-1">
-      Digital Skills
-    </span>
-  </div>
-</div>
+          <div className="lg:col-span-5 space-y-3 text-left">
+            <div className="flex items-center gap-3">
+              <img
+                src="/assets/aistudio/image_833c97c0.png"
+                alt="RANZ Digital Skills"
+                className="h-12 w-12 rounded-xl object-contain bg-white p-1 border border-slate-700 shadow-sm"
+              />
+              <div className="flex flex-col">
+                <span className="font-brand font-extrabold text-xl sm:text-2xl tracking-tight text-white leading-none">
+                  RANZ
+                </span>
+                <span className="text-[10px] text-blue-400 font-semibold tracking-wider uppercase mt-1">
+                  Digital Skills
+                </span>
+              </div>
+            </div>
             
             <p className="text-xs sm:text-sm text-slate-300 max-w-sm leading-relaxed">
               ডিজিটাল দক্ষতা শিখুন, নিজের ভবিষ্যৎ গড়ুন। আধুনিক যুগে Ads Campaign, YouTube Automation এবং AI দিয়ে ওয়েবসাইট তৈরির নির্ভরযোগ্য প্ল্যাটফর্ম।
