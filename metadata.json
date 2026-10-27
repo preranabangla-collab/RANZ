@@ -1,0 +1,6 @@
+{
+  "name": "RANZ - অনলাইন লার্নিং প্ল্যাটফর্ম",
+  "description": "ডিজিটাল দক্ষতা শিখুন, নিজের ভবিষ্যৎ গড়ুন। Ads Campaign, YouTube Automation এবং AI দিয়ে ওয়েবসাইট তৈরির প্রিমিয়াম কোর্স প্ল্যাটফর্ম।",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
