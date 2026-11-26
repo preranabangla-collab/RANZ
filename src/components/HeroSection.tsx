@@ -1,259 +1,415 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Course } from '../types';
-import { 
-  ArrowRight, 
-  Sparkles, 
-  BookOpen, 
-  UserPlus, 
-  CheckCircle2, 
-  ChevronLeft, 
-  ChevronRight, 
-  Info,
-  Pause,
-  Play
+import React, { useState, useEffect } from 'react';
+import {
+  ArrowRight,
+  Briefcase,
+  MessageSquare,
+  Globe,
+  Megaphone,
+  Video,
+  Cpu,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
+import { useSiteConfig } from '../context/SiteConfigContext';
+import { RAHMAN_SERVICES } from '../data/servicesData';
 
 interface HeroSectionProps {
-  courses: Course[];
+  onExploreServices: () => void;
   onExploreCourses: () => void;
-  onRegisterClick: () => void;
-  onSelectCourseForDetails: (course: Course) => void;
 }
 
+const BN_SHORT_TITLES: Record<string, string> = {
+  'web-tracking': 'ওয়েবসাইট ও ট্র্যাকিং',
+  'meta-ads': 'Meta (FB/IG) অ্যাডস',
+  'tiktok-ads': 'TikTok অ্যাডস',
+  'ai-automation': 'AI ও অটোমেশন',
+};
+
+const EN_SHORT_TITLES: Record<string, string> = {
+  'web-tracking': 'Website & Tracking',
+  'meta-ads': 'Meta (FB & IG) Ads',
+  'tiktok-ads': 'TikTok Advertising',
+  'ai-automation': 'AI & Automation',
+};
+
+interface GraphicSlide {
+  id: string;
+  tag: string;
+  titleEn: string;
+  titleBn: string;
+  tags: string[];
+  accentBg: string;
+  accentBar: string;
+  barHeights: number[];
+}
+
+const GRAPHIC_SLIDES: GraphicSlide[] = [
+  {
+    id: 'web-tracking',
+    tag: 'WEB & TRACKING',
+    titleEn: 'Website Development & Tracking',
+    titleBn: 'ওয়েবসাইট ডেভেলপমেন্ট ও ট্র্যাকিং',
+    tags: ['E-commerce', 'GTM & GA4', 'Meta Pixel', 'Server-Side'],
+    accentBg: 'from-[#0F1E3D] via-[#132952] to-[#17469E]',
+    accentBar: 'bg-sky-400',
+    barHeights: [45, 72, 58, 88, 68, 96, 80],
+  },
+  {
+    id: 'meta-ads',
+    tag: 'META ADVERTISING',
+    titleEn: 'Facebook & Instagram Ads',
+    titleBn: 'Facebook ও Instagram বিজ্ঞাপন',
+    tags: ['Campaign Setup', 'Lookalike', 'Retargeting', 'A/B Testing'],
+    accentBg: 'from-[#101828] via-[#172B54] to-[#1D4ED8]',
+    accentBar: 'bg-blue-400',
+    barHeights: [55, 82, 66, 94, 76, 90, 98],
+  },
+  {
+    id: 'tiktok-ads',
+    tag: 'TIKTOK ADVERTISING',
+    titleEn: 'TikTok Ads & Optimization',
+    titleBn: 'TikTok অ্যাডস ক্যাম্পেইন',
+    tags: ['Ads Setup', 'Audience Research', 'Performance', 'Optimization'],
+    accentBg: 'from-[#0B172A] via-[#112A46] to-[#0E7490]',
+    accentBar: 'bg-cyan-400',
+    barHeights: [50, 68, 86, 62, 92, 78, 95],
+  },
+  {
+    id: 'ai-automation',
+    tag: 'AI & AUTOMATION',
+    titleEn: 'AI & Digital Automation',
+    titleBn: 'AI ও ডিজিটাল অটোমেশন',
+    tags: ['AI Business', 'AI Website', 'YT Automation'],
+    accentBg: 'from-[#0F172A] via-[#162C46] to-[#047857]',
+    accentBar: 'bg-emerald-400',
+    barHeights: [60, 74, 84, 70, 95, 82, 90],
+  },
+];
+
+const HERO_SERVICE_ICONS: Record<string, React.ReactNode> = {
+  globe: <Globe className="w-4 h-4 text-sky-300" />,
+  megaphone: <Megaphone className="w-4 h-4 text-sky-300" />,
+  video: <Video className="w-4 h-4 text-cyan-300" />,
+  cpu: <Cpu className="w-4 h-4 text-emerald-300" />,
+};
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  courses,
+  onExploreServices,
   onExploreCourses,
-  onRegisterClick,
-  onSelectCourseForDetails,
 }) => {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const { config, language } = useSiteConfig();
+  const isEn = language === 'en';
+  const [activeSlideIdx, setActiveSlideIdx] = useState(0);
 
-  // Automatically cycle through courses on repeat every 3.5 seconds
   useEffect(() => {
-    if (!isAutoPlaying || courses.length === 0) {
-      if (timerRef.current) clearInterval(timerRef.current);
-      return;
-    }
-
-    timerRef.current = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % courses.length);
+    const timer = setInterval(() => {
+      setActiveSlideIdx((prev) => (prev + 1) % GRAPHIC_SLIDES.length);
     }, 3500);
+    return () => clearInterval(timer);
+  }, []);
 
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [isAutoPlaying, courses.length]);
+  const currentSlide = GRAPHIC_SLIDES[activeSlideIdx];
+  const rahmanWhatsappNumber = config.helpline1Whatsapp.replace(/[^0-9]/g, '') || '8801883423076';
+  const rahmanWhatsappUrl = `https://wa.me/${rahmanWhatsappNumber}`;
 
-  const activeCourse = courses[activeIdx] || courses[0];
-
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setActiveIdx((prev) => (prev - 1 + courses.length) % courses.length);
+  const handlePrevSlide = () => {
+    setActiveSlideIdx((prev) => (prev - 1 + GRAPHIC_SLIDES.length) % GRAPHIC_SLIDES.length);
   };
 
-  const handleNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setActiveIdx((prev) => (prev + 1) % courses.length);
+  const handleNextSlide = () => {
+    setActiveSlideIdx((prev) => (prev + 1) % GRAPHIC_SLIDES.length);
   };
 
   return (
-    <section id="home" className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16 bg-white bg-tech-grid border-b border-slate-100">
-      {/* Soft ambient lighting gradient behind content */}
-      <div 
-        aria-hidden="true" 
-        className="absolute top-0 right-0 -mr-40 -mt-20 w-80 h-80 rounded-full bg-blue-100/50 blur-3xl pointer-events-none" 
+    <section
+      id="home"
+      className="relative overflow-hidden pt-4 pb-8 sm:pt-8 sm:pb-12 bg-white bg-tech-grid border-b border-slate-200/80"
+    >
+      {/* Subtle architectural ambient glow graphics */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-24 -left-24 w-80 h-80 rounded-full bg-blue-500/8 blur-3xl"
       />
-      <div 
-        aria-hidden="true" 
-        className="absolute bottom-0 left-0 -ml-40 -mb-20 w-80 h-80 rounded-full bg-amber-50/40 blur-3xl pointer-events-none" 
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -bottom-24 right-0 w-96 h-96 rounded-full bg-sky-400/10 blur-3xl"
       />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-          
-          {/* Left Column: Headline and Value Proposition */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-left">
-            
-            {/* Tagline / Micro-kicker */}
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#EAF2FF] border border-blue-200/60 text-[#17469E] text-xs font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
-              <span className="font-brand font-bold">RANZ</span>
-              <span>·</span>
-              <span>Learn Skills. Build Your Future.</span>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-10 items-center">
+          {/* Left Column: Visual Intro, CTAs & Graphic Service Cards */}
+          <div className="lg:col-span-6 order-2 lg:order-1 space-y-3.5 sm:space-y-4 text-left">
+            {/* Visual Graphic Identity Strip */}
+            <div className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gradient-to-r from-[#0F1E3D] to-[#17469E] text-white text-xs shadow-xs">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <span className="font-brand font-bold tracking-wide">MD ABDUR RAHMAN</span>
+              <span className="text-blue-200" aria-hidden="true">·</span>
+              <span className="text-sky-200 font-medium">
+                {isEn
+                  ? 'Digital Marketing & Web Solutions Specialist'
+                  : 'ডিজিটাল মার্কেটিং ও ওয়েব সলিউশনস স্পেশালিস্ট'}
+              </span>
             </div>
 
-            {/* Main Headline - Smart & Crisp */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#101828] leading-[1.25] tracking-tight text-balance">
-              ডিজিটাল দক্ষতা শিখুন, <br className="hidden sm:inline" />
-              <span className="text-[#17469E]">নিজের ভবিষ্যৎ গড়ুন</span>
+            <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold text-[#101828] leading-[1.22] tracking-tight text-balance">
+              {isEn ? (
+                <>
+                  Digital Marketing, Websites <br className="hidden sm:inline" />
+                  <span className="bg-gradient-to-r from-[#17469E] to-[#0EA5E9] bg-clip-text text-transparent">
+                    &amp; Conversion Tracking
+                  </span>
+                </>
+              ) : (
+                <>
+                  ডিজিটাল মার্কেটিং, ওয়েবসাইট <br className="hidden sm:inline" />
+                  <span className="bg-gradient-to-r from-[#17469E] to-[#0EA5E9] bg-clip-text text-transparent">
+                    ও ট্র্যাকিং সার্ভিস
+                  </span>
+                </>
+              )}
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl text-pretty font-normal">
-              RANZ-এর সঙ্গে শিখুন ডিজিটাল মার্কেটিং, YouTube Automation এবং AI দিয়ে ওয়েবসাইট তৈরি। নিজের দক্ষতা বাড়ানোর যাত্রা শুরু করুন আজই।
+            <p className="text-xs sm:text-base text-slate-600 leading-relaxed max-w-xl font-normal">
+              {isEn
+                ? 'I help businesses grow through strategic digital marketing, professional website development, and data-driven advertising solutions.'
+                : 'কৌশলগত ডিজিটাল মার্কেটিং, প্রফেশনাল ওয়েবসাইট ডেভেলপমেন্ট ও ডেটা-ড্রিভেন বিজ্ঞাপনের মাধ্যমে ব্যবসার প্রবৃদ্ধিতে সহায়তা করি।'}
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
+            {/* Primary CTAs */}
+            <div className="flex flex-wrap items-center gap-2.5 pt-0.5">
               <button
-                onClick={onExploreCourses}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-[#17469E] hover:bg-[#13377d] active:bg-[#0f2c66] rounded-lg shadow-2xs hover:shadow-xs transition-all cursor-pointer whitespace-nowrap"
+                type="button"
+                onClick={onExploreServices}
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-gradient-to-r from-[#102654] to-[#17469E] hover:from-[#17469E] hover:to-[#1E56C5] rounded-lg transition-all cursor-pointer whitespace-nowrap shadow-sm"
               >
-                <BookOpen className="w-4 h-4" />
-                <span>কোর্স দেখুন</span>
+                <Briefcase className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>{isEn ? 'All Services' : 'সব সার্ভিস দেখুন'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
 
-              <button
-                onClick={onRegisterClick}
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-[#17469E] bg-white hover:bg-slate-50 border border-slate-300 rounded-lg shadow-2xs hover:border-[#17469E] transition-all cursor-pointer whitespace-nowrap"
+              <a
+                href={rahmanWhatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-all cursor-pointer whitespace-nowrap shadow-sm"
               >
-                <UserPlus className="w-4 h-4 text-[#17469E]" />
-                <span>রেজিস্ট্রেশন করুন</span>
+                <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span>WhatsApp</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={onExploreCourses}
+                className="inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-[#17469E] bg-white hover:bg-blue-50 border border-blue-200 rounded-lg transition-all cursor-pointer whitespace-nowrap"
+              >
+                <span>{isEn ? 'Course' : 'কোর্স'}</span>
               </button>
             </div>
 
-            {/* Clean Value Signals */}
-            <div className="pt-3 border-t border-slate-200/70 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-600">
-              <div className="flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#17469E] shrink-0" />
-                <span>বাস্তবমুখী ডিজিটাল স্কিল</span>
-              </div>
-              <div className="flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#17469E] shrink-0" />
-                <span>সম্পূর্ণ বাংলায় দিকনির্দেশনা</span>
-              </div>
-              <div className="flex items-center gap-1.5 font-medium">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#17469E] shrink-0" />
-                <span>ভবিষ্যতমুখী ক্যারিয়ার গাইড</span>
-              </div>
-            </div>
+            {/* 4 Visual Graphic Service Cards (Synced with Live Showcase) */}
+            <div className="pt-3 border-t border-slate-200/80 grid grid-cols-2 gap-2.5">
+              {RAHMAN_SERVICES.map((svc, idx) => {
+                const isActive = idx === activeSlideIdx;
+                return (
+                  <button
+                    key={svc.id}
+                    type="button"
+                    onMouseEnter={() => setActiveSlideIdx(idx)}
+                    onClick={onExploreServices}
+                    className={`relative overflow-hidden flex items-center justify-between gap-2 p-2.5 sm:p-3 rounded-xl border transition-all text-left cursor-pointer group ${
+                      isActive
+                        ? 'bg-gradient-to-br from-[#0F1E3D] via-[#132952] to-[#17469E] border-[#17469E] text-white shadow-md shadow-blue-950/15'
+                        : 'bg-white border-slate-200 hover:border-blue-300 hover:bg-slate-50/90 text-slate-900 shadow-2xs'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                      <div
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
+                          isActive
+                            ? 'bg-white/15 border border-white/20'
+                            : 'bg-[#0F1E3D] shadow-2xs'
+                        }`}
+                      >
+                        {HERO_SERVICE_ICONS[svc.iconKey]}
+                      </div>
+                      <div className="min-w-0">
+                        <div
+                          className={`text-[11px] sm:text-xs font-bold leading-snug truncate ${
+                            isActive ? 'text-white' : 'text-slate-900 group-hover:text-[#17469E]'
+                          }`}
+                        >
+                          {isEn
+                            ? EN_SHORT_TITLES[svc.id] || svc.title
+                            : BN_SHORT_TITLES[svc.id] || svc.title}
+                        </div>
+                        <div
+                          className={`text-[10px] sm:text-[11px] truncate ${
+                            isActive ? 'text-sky-200' : 'text-slate-500'
+                          }`}
+                        >
+                          {svc.items.length} {isEn ? 'Services' : 'টি সার্ভিস'}
+                        </div>
+                      </div>
+                    </div>
 
+                    {/* Mini Live Graphic Signal Bars on Each Service Card */}
+                    <div
+                      aria-hidden="true"
+                      className={`hidden sm:flex items-end gap-0.5 h-5 px-1.5 py-1 rounded-md shrink-0 ${
+                        isActive ? 'bg-white/15' : 'bg-slate-100'
+                      }`}
+                    >
+                      {[45, 85, 65].map((h, barIdx) => (
+                        <span
+                          key={barIdx}
+                          style={{
+                            height: `${h}%`,
+                            animationDelay: `${(idx + barIdx) * 0.15}s`,
+                          }}
+                          className={`w-1 rounded-t-xs animate-graphic-bar ${
+                            isActive ? 'bg-sky-300' : 'bg-[#17469E]/70'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Right Column: Hero Visual Showcase with AUTO-REPEATING COURSES */}
-          <div className="lg:col-span-5 relative">
-            <div 
-              className="relative mx-auto max-w-sm lg:max-w-none group"
-              onMouseEnter={() => setIsAutoPlaying(false)}
-              onMouseLeave={() => setIsAutoPlaying(true)}
-            >
-              
-              {/* Main Course Showcase Card that rotates automatically */}
-              <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-md shadow-slate-200/50 relative">
-                
-                {/* Course Image with Mentor & Badge */}
-                <div className="relative aspect-[16/11] w-full overflow-hidden bg-slate-100">
-                  <img
-                    key={activeCourse.id}
-                    src={activeCourse.image}
-                    alt={activeCourse.nameEn}
-                    className="w-full h-full object-cover transition-all duration-500 animate-in fade-in zoom-in-95"
-                    style={{ objectPosition: activeCourse.imagePosition || 'center 40%' }}
-                    referrerPolicy="no-referrer"
-                  />
-                  
-                  {/* Top Pill: Category Badge */}
-                  <div className="absolute top-2.5 left-2.5 bg-white/95 backdrop-blur-xs text-[#17469E] text-[10px] font-bold px-2 py-0.5 rounded shadow-2xs border border-blue-100 uppercase tracking-wide">
-                    {activeCourse.badge}
+          {/* Right Column: MD ABDUR RAHMAN Natural Portrait + Auto-Changing Graphic Showcase */}
+          <div className="lg:col-span-6 order-1 lg:order-2">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-200/70 overflow-hidden">
+              {/* Crisp Studio Portrait (Natural Colors, Zero Fog/White Wash) */}
+              <div className="relative h-56 sm:h-72 lg:h-[310px] w-full overflow-hidden bg-slate-900">
+                <img
+                  src="/assets/aistudio/WhatsApp_Image_2026-11-26_at_8.09.25_AM_87d0e778.jpeg"
+                  alt="MD ABDUR RAHMAN"
+                  className="w-full h-full object-cover object-[50%_18%] animate-portrait-breath"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+
+              {/* Clean Identity Bar (No Name Truncation) */}
+              <div className="px-3.5 py-2.5 sm:px-4 sm:py-3 bg-white border-b border-slate-100 flex items-center justify-between gap-2">
+                <div className="text-left min-w-0">
+                  <div className="text-xs sm:text-sm font-bold text-[#101828] font-brand leading-tight">
+                    MD ABDUR RAHMAN
                   </div>
-
-                  {/* Top Right: Auto Slide Indicator */}
-                  <div className="absolute top-2.5 right-2.5 bg-slate-900/70 backdrop-blur-xs text-white text-[10px] font-mono px-2 py-0.5 rounded flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>{activeIdx + 1}/{courses.length}</span>
+                  <div className="text-[11px] sm:text-xs text-[#17469E] font-medium leading-tight mt-0.5">
+                    {isEn
+                      ? 'Digital Marketing & Web Solutions'
+                      : 'ডিজিটাল মার্কেটিং ও ওয়েব সলিউশনস'}
                   </div>
-
-                  {/* Manual Arrow Controls */}
-                  <button
-                    onClick={handlePrev}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 text-slate-700 hover:text-[#17469E] hover:bg-white flex items-center justify-center shadow-xs transition-all cursor-pointer opacity-80 group-hover:opacity-100"
-                    title="পূর্ববর্তী কোর্স"
-                    aria-label="Previous Course"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-
-                  <button
-                    onClick={handleNext}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-white/90 text-slate-700 hover:text-[#17469E] hover:bg-white flex items-center justify-center shadow-xs transition-all cursor-pointer opacity-80 group-hover:opacity-100"
-                    title="পরবর্তী কোর্স"
-                    aria-label="Next Course"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
                 </div>
 
-                {/* Bottom Bar Info Overlay on Image */}
-                <div className="p-3 bg-white/95 backdrop-blur-xs border-t border-slate-100 flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2 text-left truncate">
-                    {activeCourse.instructor && (
-                      <img
-                        src={activeCourse.instructor.image}
-                        alt={activeCourse.instructor.name}
-                        className="w-7 h-7 rounded-full object-cover border border-blue-200 shrink-0"
-                        style={{ objectPosition: activeCourse.instructor.avatarPosition || 'center 35%' }}
-                      />
-                    )}
-                    <div className="truncate">
-                      <div className="text-xs font-bold text-[#101828] font-brand truncate">
-                        {activeCourse.nameEn}
-                      </div>
-                      <div className="text-[10px] text-slate-500 truncate">
-                        Mentor: {activeCourse.instructor?.name} {activeCourse.totalClasses ? `· ${activeCourse.totalClasses}টি ক্লাস` : ''}
-                      </div>
+                <button
+                  type="button"
+                  onClick={onExploreServices}
+                  className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-white bg-[#17469E] hover:bg-[#13377d] px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{isEn ? 'Get Service' : 'সার্ভিস নিন'}</span>
+                </button>
+              </div>
+
+              {/* Auto-Changing Animated Service Graphic Panel */}
+              <div
+                className={`relative bg-gradient-to-r ${currentSlide.accentBg} text-white px-3.5 py-3 sm:px-4 sm:py-3.5 transition-colors duration-700`}
+              >
+                <div
+                  key={currentSlide.id}
+                  className="animate-graphic-enter flex items-center justify-between gap-3"
+                >
+                  {/* Left: Service Slide Info */}
+                  <div className="min-w-0 flex-1 text-left">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[10px] font-bold tracking-wider uppercase text-sky-300 font-brand">
+                        {currentSlide.tag}
+                      </span>
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold text-white leading-snug truncate">
+                      {isEn ? currentSlide.titleEn : currentSlide.titleBn}
+                    </div>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {currentSlide.tags.map((item) => (
+                        <span
+                          key={item}
+                          className="text-[10px] font-medium text-slate-100 bg-white/12 px-1.5 py-0.5 rounded"
+                        >
+                          {item}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => onSelectCourseForDetails(activeCourse)}
-                    className="text-[11px] font-semibold text-[#17469E] bg-[#EAF2FF] hover:bg-blue-100 px-2.5 py-1 rounded transition-colors whitespace-nowrap shrink-0 flex items-center gap-1 cursor-pointer"
+                  {/* Right: Live Animated Graphic Bars */}
+                  <div
+                    aria-hidden="true"
+                    className="flex items-end gap-1 h-11 sm:h-12 px-2.5 py-2 rounded-xl bg-white/10 border border-white/15 shrink-0"
                   >
-                    <Info className="w-3 h-3" />
-                    <span>ক্লাস টপিক দেখুন</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* DYNAMIC FLOATING ACCENT CARD: Automatically changes along with the course */}
-              <div 
-                onClick={() => onSelectCourseForDetails(activeCourse)}
-                className="cursor-pointer hidden sm:flex absolute -bottom-4 -left-4 bg-white border border-slate-200 rounded-xl p-2.5 shadow-lg shadow-slate-200/80 max-w-[240px] items-center gap-2.5 hover:border-blue-300 transition-all transform hover:-translate-y-0.5"
-              >
-                <div className="w-8 h-8 rounded-lg bg-[#17469E] text-white flex items-center justify-center font-bold text-xs shrink-0 font-brand">
-                  {activeCourse.totalClasses ? `${activeCourse.totalClasses}` : activeCourse.nameEn.substring(0, 2).toUpperCase()}
-                </div>
-                <div className="text-left truncate">
-                  <div className="text-[11px] font-bold text-slate-900 leading-tight font-brand truncate">
-                    {activeCourse.nameBn}
-                  </div>
-                  <div className="text-[10px] text-[#17469E] font-medium mt-0.5">
-                    {activeCourse.totalClasses}টি ক্লাস · বিস্তারিত জানুন
+                    {currentSlide.barHeights.map((h, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          height: `${h}%`,
+                          animationDelay: `${i * 0.14}s`,
+                        }}
+                        className={`w-1.5 rounded-t-sm ${currentSlide.accentBar} animate-graphic-bar`}
+                      />
+                    ))}
                   </div>
                 </div>
-              </div>
 
-              {/* Slider Dots */}
-              <div className="flex items-center justify-center gap-1.5 mt-3">
-                {courses.map((course, idx) => (
-                  <button
-                    key={course.id}
-                    onClick={() => setActiveIdx(idx)}
-                    className={`h-1.5 rounded-full transition-all cursor-pointer ${
-                      activeIdx === idx
-                        ? 'w-5 bg-[#17469E]'
-                        : 'w-1.5 bg-slate-300 hover:bg-slate-400'
-                    }`}
-                    aria-label={`Go to course ${idx + 1}`}
+                {/* Slide Controls & Auto-Progress Bar */}
+                <div className="mt-2.5 pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    {GRAPHIC_SLIDES.map((s, idx) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => setActiveSlideIdx(idx)}
+                        aria-label={`Slide ${idx + 1}`}
+                        className={`h-1.5 rounded-full transition-all cursor-pointer ${
+                          idx === activeSlideIdx ? 'w-5 bg-white' : 'w-1.5 bg-white/35 hover:bg-white/60'
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={handlePrevSlide}
+                      aria-label="Previous graphic"
+                      className="p-1 rounded bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                    >
+                      <ChevronLeft className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleNextSlide}
+                      aria-label="Next graphic"
+                      className="p-1 rounded bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                    >
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Smooth Auto-Cycle Progress Line */}
+                <div className="absolute inset-x-0 bottom-0 h-0.5 bg-white/10 overflow-hidden">
+                  <div
+                    key={activeSlideIdx}
+                    className="h-full w-full bg-sky-300 animate-graphic-progress"
                   />
-                ))}
+                </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </section>

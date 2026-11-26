@@ -38,3 +38,99 @@
   background-image: radial-gradient(rgba(23, 70, 158, 0.12) 1px, transparent 1px);
   background-size: 20px 20px;
 }
+
+@keyframes portraitGentleBreath {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.025);
+  }
+}
+
+@keyframes graphicSlideEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes graphicBarGrow {
+  0%, 100% {
+    transform: scaleY(0.55);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes graphicProgressFill {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.animate-portrait-breath {
+  animation: portraitGentleBreath 7s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-graphic-enter {
+  animation: graphicSlideEnter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-graphic-bar {
+  transform-origin: bottom;
+  animation: graphicBarGrow 1.8s ease-in-out infinite;
+}
+
+.animate-graphic-progress {
+  transform-origin: left;
+  animation: graphicProgressFill 3.5s linear forwards;
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes radarPing {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+}
+
+.animate-dash-flow {
+  stroke-dasharray: 5 5;
+  animation: dashFlow 1.4s linear infinite;
+}
+
+.animate-radar-ping {
+  transform-origin: center;
+  animation: radarPing 2.4s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-portrait-breath,
+  .animate-graphic-enter,
+  .animate-graphic-bar,
+  .animate-graphic-progress,
+  .animate-dash-flow,
+  .animate-radar-ping {
+    animation: none;
+  }
+}
+

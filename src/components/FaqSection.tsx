@@ -1,34 +1,40 @@
 import React, { useState } from 'react';
-import { FAQ_DATA } from '../data/coursesData';
+import { FAQ_DATA, FAQ_DATA_EN } from '../data/coursesData';
 import { ChevronDown } from 'lucide-react';
+import { useSiteConfig } from '../context/SiteConfigContext';
 
 export const FaqSection: React.FC = () => {
+  const { language } = useSiteConfig();
   const [openId, setOpenId] = useState<string | null>('faq-1');
+  const isEn = language === 'en';
+  const items = isEn ? FAQ_DATA_EN : FAQ_DATA;
 
   const toggleFaq = (id: string) => {
     setOpenId(openId === id ? null : id);
   };
 
   return (
-    <section id="faq" className="py-12 sm:py-16 bg-slate-50/70 border-b border-slate-200/80">
+    <section
+      id="faq"
+      className="py-12 sm:py-16 bg-slate-50/70 border-b border-slate-200/80"
+    >
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        
-        {/* Section Header - Smart & Balanced */}
         <div className="text-center max-w-xl mx-auto mb-8 sm:mb-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-[#EAF2FF] text-[#17469E] text-xs font-semibold mb-2">
-            <span>প্রশ্ন ও উত্তর</span>
+          <div className="text-xs font-semibold text-[#17469E] tracking-wide uppercase mb-2">
+            {isEn ? 'Frequently Asked Questions' : 'প্রশ্ন ও উত্তর'}
           </div>
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#101828] tracking-tight">
-            সাধারণ প্রশ্নসমূহ (FAQ)
+            {isEn ? 'Common Questions (FAQ)' : 'সাধারণ প্রশ্নসমূহ (FAQ)'}
           </h2>
           <p className="mt-1.5 text-xs sm:text-sm text-slate-500">
-            RANZ এবং আমাদের কোর্সসমূহ সম্পর্কিত সাধারণ তথ্যের স্পষ্ট উত্তর
+            {isEn
+              ? 'Clear answers about RANZ services and training.'
+              : 'RANZ সার্ভিস এবং কোর্স সম্পর্কিত সাধারণ তথ্যের স্পষ্ট উত্তর'}
           </p>
         </div>
 
-        {/* Accordion Container */}
         <div className="space-y-2.5">
-          {FAQ_DATA.map((item) => {
+          {items.map((item) => {
             const isOpen = openId === item.id;
             return (
               <div
@@ -44,7 +50,11 @@ export const FaqSection: React.FC = () => {
                   <span className="text-sm sm:text-base font-bold text-slate-900 text-left">
                     {item.question}
                   </span>
-                  <div className={`p-1 rounded bg-slate-100 text-slate-600 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180 bg-blue-50 text-[#17469E]' : ''}`}>
+                  <div
+                    className={`p-1 rounded bg-slate-100 text-slate-600 transition-transform duration-200 shrink-0 ${
+                      isOpen ? 'rotate-180 bg-blue-50 text-[#17469E]' : ''
+                    }`}
+                  >
                     <ChevronDown className="w-4 h-4" />
                   </div>
                 </button>
@@ -58,7 +68,6 @@ export const FaqSection: React.FC = () => {
             );
           })}
         </div>
-
       </div>
     </section>
   );

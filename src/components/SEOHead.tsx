@@ -55,8 +55,8 @@ export const SEOHead: React.FC = () => {
           founder: [
             {
               '@type': 'Person',
-              name: 'Abdur Rahman',
-              jobTitle: 'Co-Founder & Mentor',
+              name: 'MD ABDUR RAHMAN',
+              jobTitle: 'Digital Marketing & Web Solutions Specialist',
               telephone: '+8801883423076'
             },
             {

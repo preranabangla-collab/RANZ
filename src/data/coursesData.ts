@@ -2,39 +2,6 @@ import { Course, FAQItem } from '../types';
 
 export const COURSES: Course[] = [
   {
-    id: 'ads-campaign',
-    nameEn: 'Ads Campaign',
-    nameBn: 'Ads Campaign Course',
-    shortDesc: 'ডিজিটাল বিজ্ঞাপন, সেলস টার্গেটিং ও রিটার্গেটিং ক্যাম্পেইন পরিচালনার পূর্ণাঙ্গ ১০টি প্র্যাকটিক্যাল ক্লাস।',
-    fullDesc: '১০টি ক্লাসের মাধ্যমে শিখুন কীভাবে কার্যকর ফেসবুক ও মেটা বিজ্ঞাপন দিয়ে সেলস বাড়ানো যায়, পিক্সেল সেটআপ এবং এ/বি টেস্টিং দিয়ে সঠিক কাস্টমার টার্গেট করা যায়।',
-    image: '/assets/aistudio/Rahman_L_ba21fc04.png',
-    imagePosition: '45% 25%',
-    badge: 'Digital Marketing',
-    totalClasses: 10,
-    topics: [
-      'Environment Setup & Ads Research',
-      'Customer Analysis & Loyal Audience Building',
-      'Custom Audience & Lookalike Audience Setup',
-      'Retargeting Ads Strategy',
-      'Powerful Ad Copywriting & Sales-Generating Content',
-      'Campaign Structure & Ads Launch',
-      'Budget Management & Campaign Optimization',
-      'High-Performance Ads & A/B Testing',
-      'Meta Pixel & Server-Side Tracking with Google Tag Manager',
-      'Ads Metrics Analysis, Performance Optimization & Scaling'
-    ],
-    instructor: {
-      name: 'Abdur Rahman',
-      title: 'Co-Founder & Mentor',
-      image: '/assets/aistudio/Rahman_L_ba21fc04.png',
-      phone: '01883423076',
-      avatarPosition: '45% 22%'
-    },
-    price: null,
-    duration: '১০টি ক্লাস',
-    modulesCount: 10
-  },
-  {
     id: 'youtube-automation',
     nameEn: 'USA Content & Automation',
     nameBn: 'USA Content & Automation Course',
@@ -71,37 +38,6 @@ export const COURSES: Course[] = [
     price: null,
     duration: '১৫টি ক্লাস',
     modulesCount: 15
-  },
-  {
-    id: 'ai-website',
-    nameEn: 'AI Website Creation',
-    nameBn: 'AI দিয়ে Website তৈরি',
-    shortDesc: 'কোডিং ছাড়া আধুনিক এআই টুলস ব্যবহার করে পূর্ণাঙ্গ ওয়েবসাইট তৈরি, ডাটাবেস ও লাইভ ডেপ্লয়মেন্টের ৮টি ক্লাস।',
-    fullDesc: '৮টি ক্লাসে এআই দিয়ে আকর্ষণীয় ওয়েবসাইট ডিজাইন, কোডিং ছাড়া বিল্ড, গিটহাব, সুপাবেস ডাটাবেস ও ভার্সেল দিয়ে সরাসরি ডোমেইনে লাইভ করার বাস্তব অভিজ্ঞতা।',
-    image: '/assets/aistudio/Rahman_L_ba21fc04.png',
-    imagePosition: '45% 25%',
-    badge: 'Web & AI',
-    totalClasses: 8,
-    topics: [
-      'AI Research & Website Planning',
-      'AI Tools পরিচিতি ও Website Structure তৈরি',
-      'AI দিয়ে UI/UX Design ও Website Layout তৈরি',
-      'AI দিয়ে Website তৈরি',
-      'AI দিয়ে Website Content, Image ও Branding তৈরি',
-      'GitHub দিয়ে Code Management ও Version Control',
-      'Supabase দিয়ে Database ও Backend Setup',
-      'Vercel দিয়ে Website Deploy, Domain Setup ও Live করা'
-    ],
-    instructor: {
-      name: 'Abdur Rahman',
-      title: 'Co-Founder & Mentor',
-      image: '/assets/aistudio/Rahman_L_ba21fc04.png',
-      phone: '01883423076',
-      avatarPosition: '45% 22%'
-    },
-    price: null,
-    duration: '৮টি ক্লাস',
-    modulesCount: 8
   }
 ];
 
@@ -118,26 +54,44 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'faq-1',
     question: 'RANZ কী?',
-    answer: 'RANZ একটি নতুন ও আধুনিক অনলাইন লার্নিং প্ল্যাটফর্ম, যেখানে বাস্তবমুখী ডিজিটাল দক্ষতা শেখার সুযোগ তৈরি করাই আমাদের মূল লক্ষ্য।'
+    answer: 'RANZ একটি আধুনিক ডিজিটাল স্কিলস ও সার্ভিস প্ল্যাটফর্ম, যেখানে একদিকে Nazmul-এর তত্ত্বাবধানে YouTube Automation ও USA Content প্রশিক্ষণ এবং অন্যদিকে MD ABDUR RAHMAN-এর নেতৃত্বে ডিজিটাল মার্কেটিং, ওয়েব ডেভেলপমেন্ট ও ট্র্যাকিং সার্ভিস প্রদান করা হয়।'
   },
   {
     id: 'faq-2',
-    question: 'কী কী কোর্স রয়েছে?',
-    answer: 'বর্তমানে আমাদের ৩টি প্রধান কোর্স রয়েছে: Ads Campaign (অ্যাডস ক্যাম্পেইন), YouTube Automation (ইউটিউব অটোমেশন) এবং AI Website Creation (AI দিয়ে ওয়েবসাইট তৈরি)।'
+    question: 'এখানে কী কী কোর্স ও সার্ভিস রয়েছে?',
+    answer: 'কোর্স হিসেবে রয়েছে Nazmul-এর পরিচালিত ১৫টি ক্লাসের "USA Content & Automation Course"। পাশাপাশি ব্যবসায়িক গ্রোথের জন্য MD ABDUR RAHMAN-এর প্রফেশনাল সার্ভিসের মধ্যে রয়েছে Website Development & Tracking (GTM, GA4, Meta Pixel, Server-Side Tracking), Meta Advertising, TikTok Advertising এবং AI & Digital Automation।'
   },
   {
     id: 'faq-3',
-    question: 'কীভাবে রেজিস্ট্রেশন করব?',
-    answer: 'ওয়েবসাইটের রেজিস্ট্রেশন সেকশনে গিয়ে আপনার পূর্ণ নাম, মোবাইল নম্বর, পেশা এবং পছন্দের কোর্সটি ড্রপডাউন থেকে নির্বাচন করে "রেজিস্ট্রেশন সম্পন্ন করুন" বাটনে ক্লিক করুন।'
-  },
-  {
-    id: 'faq-4',
-    question: 'কোর্সের বিস্তারিত কোথায় পাব?',
-    answer: 'এই কোর্সের বিস্তারিত তথ্য শিগগিরই প্ল্যাটফর্মে প্রকাশ করা হবে। আপনি রেজিস্ট্রেশন করে রাখলে কোর্স চালুর সাথে সাথে আমাদের টিম আপনার সাথে সরাসরি যোগাযোগ করবে।'
+    question: 'কীভাবে কোর্সে রেজিস্ট্রেশন বা সার্ভিস নেব?',
+    answer: 'কোর্সের জন্য রেজিস্ট্রেশন সেকশনে গিয়ে আপনার তথ্য জমা দিন। আর ওয়েবসাইট তৈরি, ট্র্যাকিং সেটআপ বা বিজ্ঞাপন ক্যাম্পেইনের সার্ভিস নিতে চাইলে সরাসরি WhatsApp (+8801883423076) বা ইমেইলে (hmabdurrahman9082@gmail.com) যোগাযোগ করুন।'
   },
   {
     id: 'faq-5',
     question: 'কীভাবে RANZ-এর সঙ্গে যোগাযোগ করব?',
-    answer: 'যেকোনো প্রয়োজনে আমাদের হেল্পলাইনে সরাসরি কল করতে পারেন: 01883423076 অথবা 01862877500 নম্বরে। এছাড়াও ইমেইল করতে পারেন hmabdurrahman9082@gmail.com ঠিকানায় অথবা আমাদের হোয়াটসঅ্যাপে বার্তা পাঠাতে পারেন।'
+    answer: 'সার্ভিস ও ডিজিটাল মার্কেটিং সংক্রান্ত তথ্যের জন্য MD ABDUR RAHMAN (+8801883423076, hmabdurrahman9082@gmail.com) এবং YouTube Automation কোর্স সংক্রান্ত তথ্যের জন্য Nazmul (01862877500) নম্বরে কল, WhatsApp বা Telegram-এ যোগাযোগ করতে পারেন।'
+  }
+];
+
+export const FAQ_DATA_EN: FAQItem[] = [
+  {
+    id: 'faq-1',
+    question: 'What is RANZ?',
+    answer: 'RANZ is a modern Digital Skills and Marketing Services platform. Nazmul leads YouTube Automation & USA Content training, while MD ABDUR RAHMAN provides strategic digital marketing, website development, advertising, and analytics tracking services.'
+  },
+  {
+    id: 'faq-2',
+    question: 'What courses and services are available?',
+    answer: 'Training includes Nazmul’s 15-class "USA Content & Automation Course". For businesses, MD ABDUR RAHMAN offers Website Development & Tracking (GTM, GA4, Meta Pixel, Server-Side Tracking), Meta Advertising, TikTok Advertising, and AI & Digital Automation solutions.'
+  },
+  {
+    id: 'faq-3',
+    question: 'How do I register for a course or request a service?',
+    answer: 'To join the USA Content & Automation course, complete the registration form on the page. For website development, tracking, or ad management services, reach out directly via WhatsApp (+8801883423076) or email (hmabdurrahman9082@gmail.com).'
+  },
+  {
+    id: 'faq-5',
+    question: 'How can I contact the RANZ team?',
+    answer: 'Contact MD ABDUR RAHMAN at +8801883423076 (WhatsApp / Telegram) or hmabdurrahman9082@gmail.com for marketing and web solutions, and contact Nazmul at 01862877500 for YouTube Automation training.'
   }
 ];

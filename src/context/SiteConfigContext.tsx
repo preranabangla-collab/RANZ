@@ -3,12 +3,15 @@ import { DEFAULT_RANZ_LOGO_BASE64 } from '../data/defaultLogo';
 import { COURSES } from '../data/coursesData';
 import { Course } from '../types';
 
+export type SiteLanguage = 'bn' | 'en';
+
 export interface SiteConfig {
   logoUrl: string;
   brandName: string;
   brandSubtitle: string;
   tagline: string;
   aboutText: string;
+  websiteUrl: string;
   helpline1: string;
   helpline1Label: string;
   helpline1Whatsapp: string;
@@ -28,7 +31,8 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
   brandSubtitle: 'Digital Skills',
   tagline: 'Learn Skills. Build Your Future.',
   aboutText:
-    'ডিজিটাল দক্ষতা শিখুন, নিজের ভবিষ্যৎ গড়ুন। আধুনিক যুগে Ads Campaign, YouTube Automation এবং AI দিয়ে ওয়েবসাইট তৈরির নির্ভরযোগ্য প্ল্যাটফর্ম। বাস্তবভিত্তিক গাইডলাইন ও প্র্যাকটিক্যাল লার্নিং।',
+    'ডিজিটাল দক্ষতা ও ব্যবসায়িক গ্রোথের আধুনিক প্ল্যাটফর্ম। প্রফেশনাল ওয়েবসাইট ডেভেলপমেন্ট, ডিজিটাল মার্কেটিং ও ট্র্যাকিং সার্ভিস এবং ইউটিউব অটোমেশন প্রশিক্ষণ।',
+  websiteUrl: 'https://ranz.com',
   helpline1: '01883423076',
   helpline1Label: 'হেল্পলাইন ১',
   helpline1Whatsapp: '8801883423076',
@@ -43,6 +47,16 @@ export const DEFAULT_SITE_CONFIG: SiteConfig = {
 };
 
 const STORAGE_KEY = 'ranz_site_config_v1';
+const LANG_STORAGE_KEY = 'ranz_site_lang_v1';
+
+const filterActiveCourses = (savedCourses?: Course[]): Course[] => {
+  if (!Array.isArray(savedCourses)) return COURSES;
+  // Remove Rahman's legacy courses if present in old localStorage, preserve Nazmul's course
+  const kept = savedCourses.filter(
+    (c) => c.id !== 'ads-campaign' && c.id !== 'ai-website'
+  );
+  return kept.length > 0 ? kept : COURSES;
+};
 
 interface SiteConfigContextType {
   config: SiteConfig;
@@ -53,6 +67,9 @@ interface SiteConfigContextType {
   importConfigJson: (jsonStr: string) => boolean;
   isAdminOpen: boolean;
   setIsAdminOpen: (open: boolean) => void;
+  language: SiteLanguage;
+  setLanguage: (lang: SiteLanguage) => void;
+  toggleLanguage: () => void;
 }
 
 const SiteConfigContext = createContext<SiteConfigContextType | undefined>(undefined);
@@ -66,8 +83,8 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         return {
           ...DEFAULT_SITE_CONFIG,
           ...parsed,
-          // Always ensure valid logoUrl fallback
           logoUrl: parsed.logoUrl || DEFAULT_RANZ_LOGO_BASE64,
+          courses: filterActiveCourses(parsed.courses),
         };
       }
     } catch (e) {
@@ -76,9 +93,35 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     return DEFAULT_SITE_CONFIG;
   });
 
+  const [language, setLanguageState] = useState<SiteLanguage>(() => {
+    try {
+      const savedLang = localStorage.getItem(LANG_STORAGE_KEY);
+      if (savedLang === 'en' || savedLang === 'bn') return savedLang;
+    } catch {
+      // ignore
+    }
+    return 'bn';
+  });
+
   const [isAdminOpen, setIsAdminOpen] = useState(false);
 
-  // Sync state changes to localStorage
+  useEffect(() => {
+    document.documentElement.lang = language;
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, language);
+    } catch {
+      // ignore
+    }
+  }, [language]);
+
+  const setLanguage = (lang: SiteLanguage) => {
+    setLanguageState(lang);
+  };
+
+  const toggleLanguage = () => {
+    setLanguageState((prev) => (prev === 'bn' ? 'en' : 'bn'));
+  };
+
   const updateConfig = (partial: Partial<SiteConfig>) => {
     setConfig((prev) => {
       const updated = { ...prev, ...partial };
@@ -133,6 +176,7 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
           ...DEFAULT_SITE_CONFIG,
           ...parsed,
           logoUrl: parsed.logoUrl || DEFAULT_RANZ_LOGO_BASE64,
+          courses: filterActiveCourses(parsed.courses),
         };
         setConfig(merged);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
@@ -155,6 +199,9 @@ export const SiteConfigProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         importConfigJson,
         isAdminOpen,
         setIsAdminOpen,
+        language,
+        setLanguage,
+        toggleLanguage,
       }}
     >
       {children}

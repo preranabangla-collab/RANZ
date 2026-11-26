@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { SiteConfigProvider, useSiteConfig } from './context/SiteConfigContext';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
+import { AboutSection } from './components/AboutSection';
+import { TeamSection } from './components/TeamSection';
 import { CoursesSection } from './components/CoursesSection';
 import { CourseModal } from './components/CourseModal';
 import { RegistrationSection } from './components/RegistrationSection';
-import { AboutSection } from './components/AboutSection';
+import { ServicesSection } from './components/ServicesSection';
 import { ContactSection } from './components/ContactSection';
 import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
@@ -26,6 +28,10 @@ function MainApp() {
     }
   };
 
+  const handleServiceClick = () => {
+    scrollToSection('services');
+  };
+
   const handleRegisterClick = () => {
     scrollToSection('registration');
   };
@@ -38,71 +44,67 @@ function MainApp() {
     setSelectedCourseForModal(null);
     setSelectedCourseForRegistration(course.nameEn);
     setTimeout(() => {
-      scrollToSection('registration');
+      handleRegisterClick();
     }, 100);
   };
 
   const handleQuickRegisterFromCard = (course: Course) => {
     setSelectedCourseForRegistration(course.nameEn);
-    scrollToSection('registration');
+    handleRegisterClick();
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-slate-900 font-sans selection:bg-[#17469E] selection:text-white">
-      {/* SEO Canonical & JSON-LD Structured Data */}
       <SEOHead />
 
-      {/* 1. Header with Top Bar Contract */}
-      <Header onRegisterClick={handleRegisterClick} />
+      {/* Header: Home, Service, Contact + Language Switcher + Service CTA */}
+      <Header onServiceClick={handleServiceClick} />
 
-      {/* Main Page Sections */}
       <main className="flex-1">
-        {/* 2. Hero Section with dynamic auto-repeating course showcase */}
+        {/* 1. Home (MD ABDUR RAHMAN Photo & Service Overview) */}
         <HeroSection
-          courses={config.courses}
+          onExploreServices={handleServiceClick}
           onExploreCourses={handleExploreCourses}
-          onRegisterClick={handleRegisterClick}
-          onSelectCourseForDetails={(course) => setSelectedCourseForModal(course)}
         />
 
-        {/* 3. Courses Section (3 Specific Courses) */}
+        {/* 2. Services First (MD ABDUR RAHMAN - Visible Immediately) */}
+        <ServicesSection />
+
+        {/* 3. Our Team (MD ABDUR RAHMAN & NAZMUL) */}
+        <TeamSection />
+
+        {/* 4. About RANZ */}
+        <AboutSection />
+
+        {/* 5. Course (Nazmul's Preserved Course) */}
         <CoursesSection
           courses={config.courses}
           onSelectCourseForDetails={(course) => setSelectedCourseForModal(course)}
           onQuickRegister={handleQuickRegisterFromCard}
         />
 
-        {/* 4. Registration Section */}
+        {/* Course Registration (Nazmul's Course) */}
         <RegistrationSection
           selectedCourseId={selectedCourseForRegistration}
         />
 
-        {/* 5. About Section (RANZ Philosophy & Founders) */}
-        <AboutSection />
-
-        {/* 6. Contact Section (Direct Call, Email, WhatsApp, Telegram) */}
+        {/* 6. Contact */}
         <ContactSection />
 
-        {/* 7. FAQ Section (Bengali Accordion) */}
+        {/* 7. FAQ */}
         <FaqSection />
       </main>
 
-      {/* 8. Footer (Dark Navy, Copyright, Navigation, Admin Panel Trigger) */}
-      <Footer
-        onRegisterClick={handleRegisterClick}
-      />
+      <Footer onServiceClick={handleServiceClick} />
 
-      {/* Course Details Modal */}
       <CourseModal
         course={selectedCourseForModal}
         onClose={() => setSelectedCourseForModal(null)}
         onProceedToRegister={handleProceedToRegisterFromModal}
       />
 
-      {/* Floating Back to Top Button */}
       <BackToTop />
 
-      {/* Admin Panel Modal at the bottom */}
       <AdminPanel />
     </div>
   );

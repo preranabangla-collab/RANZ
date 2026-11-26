@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Phone, Mail, ArrowUp, MessageSquare, Send, Sliders } from 'lucide-react';
+import { Mail, ArrowUp, MessageSquare, Send, Sliders, Languages } from 'lucide-react';
 import { useSiteConfig } from '../context/SiteConfigContext';
 
 interface FooterProps {
-  onRegisterClick: () => void;
+  onServiceClick: () => void;
 }
 
-// Resilient Logo Component: Displays config.logoUrl, and cleanly falls back to vector SVG if needed
 const FooterLogo: React.FC = () => {
   const { config } = useSiteConfig();
   const [hasError, setHasError] = useState(false);
@@ -59,10 +58,9 @@ const FooterLogo: React.FC = () => {
   );
 };
 
-export const Footer: React.FC<FooterProps> = ({
-  onRegisterClick,
-}) => {
-  const { config, setIsAdminOpen } = useSiteConfig();
+export const Footer: React.FC<FooterProps> = ({ onServiceClick }) => {
+  const { config, setIsAdminOpen, language, toggleLanguage } = useSiteConfig();
+  const isEn = language === 'en';
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -95,10 +93,7 @@ export const Footer: React.FC<FooterProps> = ({
   return (
     <footer className="bg-[#101828] text-white pt-12 pb-8 border-t border-slate-800">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-slate-800">
-          
           {/* Brand Col */}
           <div className="lg:col-span-5 space-y-3 text-left">
             <div className="flex items-center gap-3">
@@ -112,9 +107,11 @@ export const Footer: React.FC<FooterProps> = ({
                 </span>
               </div>
             </div>
-            
+
             <p className="text-xs sm:text-sm text-slate-300 max-w-sm leading-relaxed">
-              {config.aboutText}
+              {isEn
+                ? 'Modern digital skills, strategic marketing services, website development, and conversion tracking platform.'
+                : config.aboutText}
             </p>
 
             <div className="pt-1 flex items-center gap-1.5 text-xs text-slate-400">
@@ -126,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Quick Links */}
           <div className="lg:col-span-3 space-y-2.5 text-left">
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider">
-              ন্যাভিগেশন
+              {isEn ? 'Navigation' : 'নেভিগেশন'}
             </h4>
             <ul className="space-y-1.5 text-xs sm:text-sm text-slate-300">
               <li>
@@ -135,16 +132,7 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={(e) => handleNavClick(e, '#home')}
                   className="hover:text-blue-400 transition-colors"
                 >
-                  হোম
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#courses"
-                  onClick={(e) => handleNavClick(e, '#courses')}
-                  className="hover:text-blue-400 transition-colors"
-                >
-                  কোর্সসমূহ
+                  {isEn ? 'Home' : 'হোম'}
                 </a>
               </li>
               <li>
@@ -153,7 +141,34 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={(e) => handleNavClick(e, '#about')}
                   className="hover:text-blue-400 transition-colors"
                 >
-                  আমাদের সম্পর্কে
+                  {isEn ? 'About RANZ' : 'RANZ সম্পর্কে'}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#team"
+                  onClick={(e) => handleNavClick(e, '#team')}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  {isEn ? 'Our Team' : 'আমাদের টিম'}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#courses"
+                  onClick={(e) => handleNavClick(e, '#courses')}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  {isEn ? 'Course' : 'কোর্স'}
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#services"
+                  onClick={(e) => handleNavClick(e, '#services')}
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  {isEn ? 'Service' : 'সার্ভিস'}
                 </a>
               </li>
               <li>
@@ -162,34 +177,38 @@ export const Footer: React.FC<FooterProps> = ({
                   onClick={(e) => handleNavClick(e, '#contact')}
                   className="hover:text-blue-400 transition-colors"
                 >
-                  যোগাযোগ
+                  {isEn ? 'Contact' : 'যোগাযোগ'}
                 </a>
               </li>
               <li>
                 <button
-                  onClick={onRegisterClick}
+                  type="button"
+                  onClick={onServiceClick}
                   className="text-amber-400 hover:text-amber-300 transition-colors font-medium cursor-pointer"
                 >
-                  রেজিস্ট্রেশন
+                  {isEn ? 'Get Service' : 'সার্ভিস নিন'}
                 </button>
               </li>
             </ul>
           </div>
 
-          {/* Direct Contact Info with WhatsApp & Telegram for BOTH numbers */}
+          {/* Direct Contact Info */}
           <div className="lg:col-span-4 space-y-3 text-left">
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider">
-              যোগাযোগ ও সহায়তা
+              {isEn ? 'Contact & Support' : 'যোগাযোগ ও সহায়তা'}
             </h4>
-            
+
             <div className="space-y-2 text-xs text-slate-300">
-              {/* Number 1 */}
+              {/* Number 1 - MD ABDUR RAHMAN */}
               <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <a href={`tel:${config.helpline1}`} className="font-mono font-bold text-white hover:text-blue-400">
-                    {config.helpline1}
+                  <a
+                    href={`tel:${config.helpline1}`}
+                    className="font-mono font-bold text-white hover:text-blue-400"
+                  >
+                    +88{config.helpline1}
                   </a>
-                  <span className="text-[10px] text-slate-500">{config.helpline1Label}</span>
+                  <span className="text-[10px] text-slate-400">MD ABDUR RAHMAN</span>
                 </div>
                 <div className="flex items-center gap-2 pt-0.5">
                   <a
@@ -214,13 +233,18 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
 
-              {/* Number 2 */}
+              {/* Number 2 - Nazmul (Preserved) */}
               <div className="p-2.5 rounded-lg bg-slate-900 border border-slate-800 space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <a href={`tel:${config.helpline2}`} className="font-mono font-bold text-white hover:text-blue-400">
+                  <a
+                    href={`tel:${config.helpline2}`}
+                    className="font-mono font-bold text-white hover:text-blue-400"
+                  >
                     {config.helpline2}
                   </a>
-                  <span className="text-[10px] text-slate-500">{config.helpline2Label}</span>
+                  <span className="text-[10px] text-slate-500">
+                    {config.helpline2Label} · Nazmul
+                  </span>
                 </div>
                 <div className="flex items-center gap-2 pt-0.5">
                   <a
@@ -245,43 +269,55 @@ export const Footer: React.FC<FooterProps> = ({
                 </div>
               </div>
 
-              {/* Email */}
               <div className="flex items-center gap-1.5 pt-1">
                 <Mail className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                <a href={`mailto:${config.email}`} className="text-xs hover:text-white transition-colors truncate">
+                <a
+                  href={`mailto:${config.email}`}
+                  className="text-xs hover:text-white transition-colors truncate"
+                >
                   {config.email}
                 </a>
               </div>
             </div>
           </div>
-
         </div>
 
-        {/* Bottom Bar: Copyright, Back to Top & Admin Panel Button */}
+        {/* Bottom Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
-          <p>© {config.brandName} — সর্বস্বত্ব সংরক্ষিত।</p>
+          <p>
+            © {config.brandName} —{' '}
+            {isEn ? 'All rights reserved.' : 'সর্বস্বত্ব সংরক্ষিত।'}
+          </p>
 
-          <div className="flex items-center gap-3">
-            {/* Admin Panel Button at the very bottom (Password Protected) */}
+          <div className="flex flex-wrap items-center gap-3">
             <button
-              onClick={() => setIsAdminOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors cursor-pointer text-xs font-medium"
-              title="ওয়েবসাইটের লোগো ও তথ্য এডিট করুন (পাসওয়ার্ড: Rahman9082##)"
+              type="button"
+              onClick={toggleLanguage}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-colors cursor-pointer text-xs font-medium"
             >
-              <Sliders className="w-3.5 h-3.5 text-blue-400" />
-              <span>অ্যাডমিন প্যানেল 🔒</span>
+              <Languages className="w-3.5 h-3.5 text-blue-400" />
+              <span>{isEn ? 'বাংলা' : 'English'}</span>
             </button>
 
             <button
+              type="button"
+              onClick={() => setIsAdminOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors cursor-pointer text-xs font-medium"
+            >
+              <Sliders className="w-3.5 h-3.5 text-blue-400" />
+              <span>{isEn ? 'Admin Panel' : 'অ্যাডমিন প্যানেল'}</span>
+            </button>
+
+            <button
+              type="button"
               onClick={scrollToTop}
               className="inline-flex items-center gap-1 text-slate-400 hover:text-white transition-colors cursor-pointer text-xs"
             >
-              <span>উপরে যান</span>
+              <span>{isEn ? 'Back to Top' : 'উপরে যান'}</span>
               <ArrowUp className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
-
       </div>
     </footer>
   );
